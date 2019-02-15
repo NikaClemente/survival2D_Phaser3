@@ -19,10 +19,10 @@ class SceneGame extends Phaser.Scene {
     }
 
     create() {
-        let BG = this.add.image(0, 0, 'backgroundGame').setOrigin(0,0);
+        let BG = this.add.image(0, 0, 'backgroundGame').setOrigin(0.5,0.5).setScale(10,3);
         
-        let row = 6;
-        let column = 30;
+        let row = 50;
+        let column = 200;
 
         this.blocks = this.matrixArray(row, column);
         console.log(this.blocks);
@@ -54,12 +54,28 @@ class SceneGame extends Phaser.Scene {
         });
 
 
-        this.player = this.add.sprite(50, 400, 'player', 1).setOrigin(0,1).setScale(2);
+        this.player = this.add.sprite(WIDTH/2, 400, 'player', 1).setOrigin(0,1).setScale(2);
     
         // this.blocks.on('pointerup', function () {
         //     this.blocks.destroy();
         // }, this);
 
+
+
+        let controlConfig = {
+            camera: this.cameras.main,
+            left: this.cursors.left,
+            right: this.cursors.right,
+            up: this.cursors.up,
+            down: this.cursors.down,
+            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+            acceleration: 0.06,
+            drag: 0.0005,
+            maxSpeed: 0.35
+        };
+    
+        this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
     }
 
     update(time, delta) {
@@ -78,9 +94,8 @@ class SceneGame extends Phaser.Scene {
             this.player.anims.stop();
         }
 
-        if (this.player.x > (WIDTH - WIDTH/3)) {
 
-        }
+        this.controls.update(delta);
     }
 
     matrixArray(rows,columns){
