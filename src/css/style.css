@@ -1,4 +1,3 @@
-
 #game{
     position: fixed;
     top: 50%;
@@ -6,9 +5,4 @@
     margin: -300px 0 0 -400px;
     width: 800px;
     height: 600px;
-    border: 4px solid #fff;
-}
-
-#game:hover{
-    border: 4px solid #000;
 }
