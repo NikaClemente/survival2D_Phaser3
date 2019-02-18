@@ -30,15 +30,19 @@ class SceneGame extends Phaser.Scene {
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < column; j++) {
                 if (i == 0){
-                    this.blocks[0][j] = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', 0).setOrigin(0,0).setScale(this.blockScale);  ;
+                    this.blocks[0][j] = this.add.image(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', 0).setOrigin(0,0).setScale(this.blockScale);  ;
+                    this.blocks[0][j].setInteractive();
                 }
                 else{
                     this.blocks[i][j] = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', this.getRandomArbitrary(1,13)).setOrigin(0,0).setScale(this.blockScale);  
+                    this.blocks[i][j] .setInteractive();
                 }
             } 
             
         }
 
+
+        this.input.on('gameobjectdown',this.onObjectClicked);
         // for (let i = 0; i < row; i++) {
         //     for (let j = 0; j < column; j++) {
         //         let sprite = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', this.blocks[i][j]).setOrigin(0,0).setScale(this.blockScale);  
@@ -76,6 +80,12 @@ class SceneGame extends Phaser.Scene {
         };
     
         this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
+    }
+
+    onObjectClicked(pointer,gameObject)
+    {
+        //gameObject.angle+=10;
+        gameObject.visible = false;
     }
 
     update(time, delta) {
