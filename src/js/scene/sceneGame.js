@@ -20,9 +20,10 @@ class SceneGame extends Phaser.Scene {
 
     create() {
         let BG = this.add.image(0, 0, 'backgroundGame').setOrigin(0.5,0.5).setScale(10,3);
-        
+        this.player = this.add.sprite(WIDTH/2, 400, 'player', 1).setOrigin(0,1).setScale(2);
+
         let row = 50;
-        let column = 200;
+        let column = 100;
 
         this.blocks = this.matrixArray(row, column);
         console.log(this.blocks);
@@ -31,19 +32,21 @@ class SceneGame extends Phaser.Scene {
             for (let j = 0; j < column; j++) {
                 if (i == 0){
                     this.blocks[0][j] = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', 0).setOrigin(0,0).setScale(this.blockScale);  ;
+                    this.blocks[0][j].setInteractive();
                 }
                 else{
                     this.blocks[i][j] = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', this.getRandomArbitrary(1,13)).setOrigin(0,0).setScale(this.blockScale);  
+                    this.blocks[i][j].setInteractive();
                 }
             } 
             
         }
 
-        // for (let i = 0; i < row; i++) {
-        //     for (let j = 0; j < column; j++) {
-        //         let sprite = this.add.sprite(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', this.blocks[i][j]).setOrigin(0,0).setScale(this.blockScale);  
-        //     } 
-        // }
+        this.cameras.main.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + 40 + 40 + 40 + 20), 1000);
+
+ 
+        this.input.on('gameobjectdown',this.onObjectClicked);
+
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.anims.create({
@@ -54,13 +57,6 @@ class SceneGame extends Phaser.Scene {
         });
 
 
-        this.player = this.add.sprite(WIDTH/2, 400, 'player', 1).setOrigin(0,1).setScale(2);
-    
-        // this.blocks.on('pointerup', function () {
-        //     this.blocks.destroy();
-        // }, this);
-
-
 
         let controlConfig = {
             camera: this.cameras.main,
@@ -68,14 +64,22 @@ class SceneGame extends Phaser.Scene {
             right: this.cursors.right,
             up: this.cursors.up,
             down: this.cursors.down,
-            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            acceleration: 0.06,
-            drag: 0.0005,
-            maxSpeed: 0.35
+            acceleration: 0.06,                 // Ускорение
+            drag: 0.001,                       // (тянуть 0.0005)
+            maxSpeed: 0.35                      // Максимальная скорость
         };
     
+        // zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+        // zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+
+
+        
         this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
+    }
+
+    onObjectClicked(pointer,gameObject)
+    {
+        gameObject.visible = false;
     }
 
     update(time, delta) {
