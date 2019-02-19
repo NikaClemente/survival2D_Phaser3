@@ -22,6 +22,7 @@ class SceneGame extends Phaser.Scene {
 
     block(gameObject, sprite){
         gameObject.destroy();
+        gameObject.refreshBody();
         console.log('Мы в функции 1  ', sprite);
         //gameObject.refreshBody();
     }
@@ -29,7 +30,6 @@ class SceneGame extends Phaser.Scene {
     create() {
         let BG = this.add.image(0, 0, 'backgroundGame').setOrigin(0.5,0.5).setScale(10,3);
         this.player = this.physics.add.sprite(WIDTH/2, 200, 'player', 1).setOrigin(1,0).setScale(2);
-        // this.player.refreshBody();
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
@@ -45,6 +45,7 @@ class SceneGame extends Phaser.Scene {
                         this.blocks[0][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', 0).setOrigin(0,0).setScale(this.blockScale);
                         this.blocks[0][j].setInteractive();
                         this.physics.add.collider(this.player, this.blocks[0][j]);
+                        this.blocks[0][j].refreshBody();
                         this.blocks[0][j].on('pointerdown', function(pointer){   
                         game.block(this, 0);
                     },this.blocks[0][j]);
@@ -53,6 +54,7 @@ class SceneGame extends Phaser.Scene {
                         this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale - 100, i*this.blockSize*this.blockScale + 400, 'blocks', this.getRandomArbitrary(1,13)).setOrigin(0,0).setScale(this.blockScale);  
                         this.blocks[i][j].setInteractive();
                         this.physics.add.collider(this.player, this.blocks[i][j]);
+                        this.blocks[i][j].refreshBody();
                         this.blocks[i][j].on('pointerdown', function(pointer){
                         game.block(this, this.frame.name);
                     },this.blocks[i][j]);
@@ -109,16 +111,17 @@ class SceneGame extends Phaser.Scene {
         if (this.cursors.left.isDown)
         {
             this.player.anims.play('left', true).setFlipX(true);
-            this.player.x -= this.playerSpeed;
+            this.player.setVelocityX(-200);
         }
         else if (this.cursors.right.isDown)
         {
             this.player.anims.play('left', true).setFlipX(false);
-            this.player.x += this.playerSpeed;
+            this.player.setVelocityX(200);
         }
         else
         {
             this.player.anims.stop();
+            this.player.setVelocityX(0);
         }
 
 
