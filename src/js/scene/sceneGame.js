@@ -94,22 +94,26 @@ class SceneGame extends Phaser.Scene {
         this.physics.world.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
         this.cameras.main.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5)).setName('main');
 
-        this.cameras.main.startFollow(this.player, true);    // Камера закреплена за персонажем
+        this.cameras.main.startFollow(this.player, true);    // Главная камера закреплена за персонажем
 
-        this.minimap = this.cameras.add(WIDTH-200, 10, 150, 100).setZoom(0.1).setName('mini');
-        this.minimap.startFollow(this.player, true);    // Камера закреплена за персонажем
-        this.minimap.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
+        { // Mini map
+            this.minimap = this.cameras.add(WIDTH-200, 10, 150, 100).setZoom(0.1).setName('mini');
+            //this.minimap.startFollow(this.player, true);    // Камера закреплена за персонажем
+            this.minimap.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
+            console.log(this.minimap);
+            this.input.keyboard.on('keydown_NUMPAD_FOUR', function () {
+                console.log('NumPad 4');
+                this.minimap.scrollX -= 150;
+            }, this);
 
-        let controlConfig = {
-            camera: this.cameras.main,
-            left: this.cursors.left,
-            right: this.cursors.right,
-            // zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            // zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
-        };
-    
-        this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
+            this.input.keyboard.on('keydown_NUMPAD_SIX', function () {
+                console.log('NumPad 6');
+                this.minimap.scrollX += 150;
+            }, this);
 
+        }
+        
+        
         { // Анимация
             this.anims.create({
                 key: 'left',
@@ -126,13 +130,17 @@ class SceneGame extends Phaser.Scene {
             }); 
         }
         
-        this.hotBar = this.add.image(HEIGHT/2 + 100, 500, 'hotBar').setScrollFactor(0);
-        this.hotBar.visible = false;
 
-        this.input.keyboard.on('keydown_NUMPAD_ZERO', function () {
-            console.log('NumPad клавиатура');  // на ней будет хотбар персонажа (для начала :) )
-            this.hotBar.visible = !this.hotBar.visible;
-        }, this);
+        { // hotBar
+            this.hotBar = this.add.image(HEIGHT/2 + 100, 500, 'hotBar').setScrollFactor(0);
+            this.hotBar.visible = false;
+
+            this.input.keyboard.on('keydown_NUMPAD_ZERO', function () {
+                console.log('NumPad 0');  // на ней будет хотбар персонажа (для начала :) )
+                this.hotBar.visible = !this.hotBar.visible;
+            }, this);
+        }
+        
     }
 
     update(time, delta) {
