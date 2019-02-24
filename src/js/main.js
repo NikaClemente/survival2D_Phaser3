@@ -18,3 +18,7 @@ var game = new Phaser.Game(config);
 
 var WIDTH = this.config.width;
 var HEIGHT = this.config.height;
+
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+}, false);

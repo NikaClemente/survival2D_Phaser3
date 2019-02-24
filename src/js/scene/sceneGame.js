@@ -59,10 +59,10 @@ class SceneGame extends Phaser.Scene {
                             this.blocks[i][j].on('pointerdown', function(pointer){   
                                 // console.log(pointer);
                                 if (pointer.buttons == 1){
-                                    game.blockDestroy(i, j, 0);
+                                    game.blockDestroy(i, j, this.frame.name);
                                 }
                                 if (pointer.buttons == 2){
-                                    game.blockNew(i, j, 2);
+                                    game.blockNew(i, j);
                                 }
                             },this.blocks[i][j]);
                     }
@@ -79,7 +79,7 @@ class SceneGame extends Phaser.Scene {
                                 game.blockDestroy(i, j, this.frame.name);
                             }
                             if (pointer.buttons == 2){
-                                game.blockNew(i, j, 2);
+                                game.blockNew(i, j);
                             }
                         },this.blocks[i][j]);
                     }
@@ -98,16 +98,17 @@ class SceneGame extends Phaser.Scene {
 
         { // Mini map
             this.minimap = this.cameras.add(WIDTH-200, 10, 150, 100).setZoom(0.1).setName('mini');
+            this.minimap.inputEnabled = false;
             //this.minimap.startFollow(this.player, true);    // Камера закреплена за персонажем
             this.minimap.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
-            console.log(this.minimap);
+            // console.log(this.minimap);
             this.input.keyboard.on('keydown_NUMPAD_FOUR', function () {
-                console.log('NumPad 4');
+                // console.log('NumPad 4');
                 this.minimap.scrollX -= 150;
             }, this);
 
             this.input.keyboard.on('keydown_NUMPAD_SIX', function () {
-                console.log('NumPad 6');
+                // console.log('NumPad 6');
                 this.minimap.scrollX += 150;
             }, this);
 
@@ -132,14 +133,87 @@ class SceneGame extends Phaser.Scene {
         
 
         { // hotBar
-            this.hotBar = this.add.image(HEIGHT/2 + 100, 500, 'hotBar').setScrollFactor(0);
-            this.hotBar.visible = false;
+            let hotBar = this.add.image(HEIGHT/2 + 100, 500, 'hotBar').setScrollFactor(0);
+            hotBar.visible = false;
+            
 
             this.input.keyboard.on('keydown_NUMPAD_ZERO', function () {
-                console.log('NumPad 0');  // на ней будет хотбар персонажа (для начала :) )
-                this.hotBar.visible = !this.hotBar.visible;
+                //console.log('NumPad 0');  // на ней будет хотбар персонажа (для начала :) )
+                //console.log(hotBar);
+                hotBar.visible = !hotBar.visible;
+
+                for(let indexItem = 0; indexItem < 5; indexItem++){
+                    this.hotBarItems[indexItem].visible = !this.hotBarItems[indexItem].visible;
+                    this.hotBarItemsCount[indexItem].visible = !this.hotBarItemsCount[indexItem].visible;
+                }
+
+            }, this);
+
+            this.hotBarItems = [5];
+            this.hotBarItemsCount = [5];
+            this.hotBarEnabledKey = 1;
+
+            this.hotBarItems[0] = this.add.image(hotBar.x - 120, hotBar.y + 22, 'blocks', 8);
+            this.hotBarItemsCount[0] = this.add.text(hotBar.x - 120, hotBar.y + 18);
+            
+            this.hotBarItems[1] = this.add.image(hotBar.x - 60, hotBar.y + 22, 'blocks', 8);
+            this.hotBarItemsCount[1] = this.add.text(hotBar.x - 60, hotBar.y + 18);
+
+            this.hotBarItems[2] = this.add.image(hotBar.x - 0, hotBar.y + 22, 'blocks', 8);
+            this.hotBarItemsCount[2] = this.add.text(hotBar.x - 0, hotBar.y + 18);
+
+            this.hotBarItems[3] = this.add.image(hotBar.x + 60, hotBar.y + 22, 'blocks', 8);
+            this.hotBarItemsCount[3] = this.add.text(hotBar.x + 60, hotBar.y + 18);
+
+            this.hotBarItems[4] = this.add.image(hotBar.x + 120, hotBar.y + 22, 'blocks', 8);
+            this.hotBarItemsCount[4] = this.add.text(hotBar.x + 120, hotBar.y + 18);
+
+            for(let indexItem = 0; indexItem < 5; indexItem++){
+                this.hotBarItems[indexItem].setOrigin(0.5,1);
+                this.hotBarItems[indexItem].setScale(0.65);
+                this.hotBarItems[indexItem].setScrollFactor(0);
+                this.hotBarItemsCount[indexItem].setScrollFactor(0);
+                this.hotBarItemsCount[indexItem].setOrigin(0.5,1);
+                this.hotBarItemsCount[indexItem].setColor('#000000').setFontStyle('bold');
+                this.hotBarItems[indexItem].visible = false;
+                this.hotBarItemsCount[indexItem].visible = false;
+            }
+
+            this.input.keyboard.on('keydown_ONE', function () {
+                // console.log('1'); 
+                this.hotBarEnabledKey = 1;
+                this.hotBarSelect(this.hotBarEnabledKey);
+            }, this);
+
+            this.input.keyboard.on('keydown_TWO', function () {
+                // console.log('2'); 
+                this.hotBarEnabledKey = 2;
+                this.hotBarSelect(this.hotBarEnabledKey);
+            }, this);
+
+            this.input.keyboard.on('keydown_THREE', function () {
+                // console.log('3'); 
+                this.hotBarEnabledKey = 3;
+                this.hotBarSelect(this.hotBarEnabledKey);
+            }, this);
+
+            this.input.keyboard.on('keydown_FOUR', function () {
+                // console.log('4');
+                this.hotBarEnabledKey = 4; 
+                this.hotBarSelect(this.hotBarEnabledKey);
+            }, this);
+
+            this.input.keyboard.on('keydown_FIVE', function () {
+                // console.log('5'); 
+                this.hotBarEnabledKey = 5;
+                this.hotBarSelect(this.hotBarEnabledKey);
             }, this);
         }
+
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // console.log(Phaser.Input.Keyboard.KeyCodes);  // Все коды клавиатуры
         
     }
 
@@ -157,12 +231,12 @@ class SceneGame extends Phaser.Scene {
         
         
         { // Движения персонажа
-            if (this.cursors.left.isDown)
+            if (this.cursors.left.isDown || this.keyA.isDown)
             {
                 this.player.anims.play('left', true).setFlipX(true);
                 this.player.setVelocityX(-350);
             }
-            else if (this.cursors.right.isDown)
+            else if (this.cursors.right.isDown || this.keyD.isDown)
             {
                 this.player.anims.play('left', true).setFlipX(false);
                 this.player.setVelocityX(350);
@@ -173,12 +247,12 @@ class SceneGame extends Phaser.Scene {
                 this.player.setVelocityX(0);
             }
 
-            if (this.cursors.up.isDown && this.player.body.touching.down)
+            if ((this.cursors.up.isDown || this.keySPACE.isDown) && this.player.body.touching.down)
             {
                 this.player.setVelocityY(-330);
             }
         }
-
+        
     }
 
     blockSetOptions(i, j){
@@ -188,29 +262,30 @@ class SceneGame extends Phaser.Scene {
     }
 
     blockDestroy(i, j, sprite){
-        // console.log('Блок ', this.blocks[i][j]);
-        this.blocks[i][j].destroy();
-
-        this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', sprite).setOrigin(0,0).setScale(this.blockScale);
-        this.blocks[i][j].alpha = 0.0;
-        this.blocks[i][j].refreshBody();
-
-        // this.blocks[i][j] = this.setImage('blocks', 0);
-        // console.log('Блок ', this.blocks[i][j]);
-        // console.log('Мы в функции 1 ',i, ' ', j, ' ', sprite);
+        this.blocks[i][j].setFrame(8);
+        this.blocks[i][j].disableBody(false);
+        this.hotBarSetFrame(sprite);
     }
 
-    blockNew(i, j, sprite){
-        console.log('Блок ', this.blocks[i][j]);
-        if (this.blocks[i][j].alpha == 0.0){
-            this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', sprite).setOrigin(0,0).setScale(this.blockScale);
-            this.blocks[i][j].alpha = 1;
-            // this.blocks[i][j].setInteractive();
-            // this.physics.add.collider(this.player, this.blocks[i][j]);
-            this.blocks[i][j].refreshBody();
-            console.log('Мы в функции 3 ',i, ' ', j, ' ', sprite);
+    blockNew(i, j){
+        let count = 0;
+        // console.log('Блок ', this.blocks[i][j]);
+        if ((this.blocks[i][j].frame.name == 8) && (this.hotBarItems[this.hotBarEnabledKey-1].frame.name != 8)){
+            this.blocks[i][j].setFrame(this.hotBarItems[this.hotBarEnabledKey-1].frame.name);
+            this.physics.add.existing(this.blocks[i][j]);
+            // console.log(this.hotBarItemsCount[this.hotBarEnabledKey-1]._text);
+            count = this.hotBarItemsCount[this.hotBarEnabledKey-1]._text;
+            count--;
+            if (count > 0){
+                this.hotBarItemsCount[this.hotBarEnabledKey-1].setText(count);
+            } else {
+                this.hotBarItems[this.hotBarEnabledKey-1].setFrame(8);
+                this.hotBarItemsCount[this.hotBarEnabledKey-1].setText('');
+            }
+            
+            // console.log('Мы в функции 3 ',i, ' ', j, ' ', 5);
         }
-        console.log('Мы в функции 2 ',i, ' ', j, ' ', sprite);
+        // console.log('Мы в функции 2 ',i, ' ', j, ' ', 5);
     }
 
     matrixArray(rows,columns){
@@ -227,4 +302,65 @@ class SceneGame extends Phaser.Scene {
     getRandomArbitrary(min, max) {
         return (Math.random() * (max - min) + min).toFixed();
     }
+
+    hotBarSelect(selectedKey){
+        this.hotBarSetAlpha();
+                
+        this.hotBarItems[selectedKey-1].alpha = 1;
+        console.log('Sprite (', this.spriteName(this.hotBarItems[selectedKey-1].frame.name),') = ', this.hotBarItemsCount[selectedKey-1]._text); 
+    }
+
+    hotBarSetFrame(sprite){
+        let count = 0;
+        for ( let pos = 0; pos < this.hotBarItems.length; pos++){
+            if (sprite == 8){
+                break;
+            }
+
+            if (this.hotBarItems[pos].frame.name == sprite){
+                // console.log('Внутри 1');
+                count = this.hotBarItemsCount[pos]._text;
+                count++;
+                this.hotBarItemsCount[pos].setText(count);
+                break;
+            } 
+            
+            if (this.hotBarItems[pos].frame.name == '8'){
+                this.hotBarItems[pos].setTexture('blocks', sprite);
+                this.hotBarItemsCount[pos].setText('1');
+                break;
+            }  
+ 
+        }
+        this.hotBarSetAlpha();
+        this.hotBarItems[0].alpha = 1;
+    }
+
+    hotBarSetAlpha(){
+        for(let indexItem = 0; indexItem < 5; indexItem++){
+            this.hotBarItems[indexItem].alpha = 0.7;
+        } 
+    }
+
+    spriteName(sprite){
+        switch (sprite) {
+            case 0:
+                return "Трава";
+            case 1:
+                return "Земля";
+            case 2:
+                return "Камень";
+            case 3:
+                return "Железо";
+            case 4:
+                return "Золото";
+            case 5:
+                return "Прочный камень";
+            case 6:
+                return "Алмаз";
+            default:
+                break;
+        }
+    }
+
 }
