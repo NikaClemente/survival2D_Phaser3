@@ -1,12 +1,12 @@
 class FPSCounter {
     constructor(scene){
         this.scene = scene;
-        console.log('1');
+        // console.log('1');
         this.startTime = this.scene.time.now;
         this.endTime;
         this.fps = 0;
         this.fpsText = this.scene.add.text(20,20).setScrollFactor(0);
-        console.log(this.fpsText);
+        // console.log(this.fpsText);
     }
 
 

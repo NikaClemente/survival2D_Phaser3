@@ -20,6 +20,8 @@ class SceneGame extends Phaser.Scene {
         this.load.spritesheet('blocks','src/img/blocks.png', { frameWidth: this.blockSize, frameHeight: this.blockSize });
         this.load.spritesheet('player','src/img/player2.png', { frameWidth: 24, frameHeight: 64 });
         this.load.image('hotBar','src/img/hotBar.png');
+        this.load.image('inventarIco','src/img/inventarIco.png')
+        this.load.image('inventar','src/img/inventar.png');
     }
 
     create() { 
@@ -81,20 +83,19 @@ class SceneGame extends Phaser.Scene {
         this.minimap = new MinimapCreate(this, row, column);
         this.fpsCounter = new FPSCounter(this);
         this.hotBar = new HotBar(this);
+        this.inventar = new Inventar(this);
 
         this.physics.world.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
         this.cameras.main.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5)).setName('main');
 
         this.cameras.main.startFollow(this.playerController.player, true);    // Главная камера закреплена за персонажем
 
- 
-
     }
 
     update(time, delta) {
         this.fpsCounter.update(time, delta);
-        this.playerController.start();
-
+        this.playerController.update();
+        this.inventar.update();
     }
 
     blockSetOptions(i, j){

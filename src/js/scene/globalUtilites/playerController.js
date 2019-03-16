@@ -28,7 +28,7 @@ class PlayerController {
     }
 
 
-    start() {
+    update() {
         if (this.cursors.left.isDown || this.keyA.isDown)
         {
             this.player.anims.play('left', true).setFlipX(true);
