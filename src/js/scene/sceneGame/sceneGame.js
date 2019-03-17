@@ -80,16 +80,18 @@ class SceneGame extends Phaser.Scene {
             } 
         }
 
-        this.minimap = new MinimapCreate(this, row, column);
         this.fpsCounter = new FPSCounter(this);
         this.hotBar = new HotBar(this);
         this.inventar = new Inventar(this);
+        this.minimap = new MinimapCreate(this, row, column, this.fpsCounter, this.hotBar, this.inventar);
+        // this.minimap = new MinimapCreate(this, row, column);
+        
+
 
         this.physics.world.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
         this.cameras.main.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5)).setName('main');
 
         this.cameras.main.startFollow(this.playerController.player, true);    // Главная камера закреплена за персонажем
-
     }
 
     update(time, delta) {
