@@ -63,7 +63,7 @@ class SceneGame extends Phaser.Scene {
                             this.blocks[i][j].refreshBody();
                     }
                     else{
-                            this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', this.getRandomArbitrary(1, this.blocksKoll-1)).setOrigin(0,0).setScale(this.blockScale);  
+                            this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', this.getRandomArbitrary(1, this.blocksKoll-2)).setOrigin(0,0).setScale(this.blockScale);  
                             this.blockSetOptions(i, j);
                             this.blocks[i][j].on('pointerdown', function(pointer){
                             if (pointer.buttons == 1){
@@ -97,7 +97,6 @@ class SceneGame extends Phaser.Scene {
     update(time, delta) {
         this.fpsCounter.update(time, delta);
         this.playerController.update();
-        this.inventar.update();
     }
 
     blockSetOptions(i, j){

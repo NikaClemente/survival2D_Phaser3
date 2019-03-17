@@ -89,25 +89,36 @@ class HotBar {
 
     hotBarSetFrame(sprite){
         let count = 0;
-        for ( let pos = 0; pos < this.hotBarItems.length; pos++){
+        //console.log(this.hotBarItems.length + this.scene.inventar.inventarEnabledItems);
+        for ( let pos = 0; pos < (this.hotBarItems.length + this.scene.inventar.inventarEnabledItems); pos++){
             if (sprite == 8){
                 break;
             }
 
-            if (this.hotBarItems[pos].frame.name == sprite){
-                // console.log('Внутри 1');
-                count = this.hotBarItemsCount[pos]._text;
-                count++;
-                this.hotBarItemsCount[pos].setText(count);
+            if (pos > this.hotBarItems.length - 1){
+                this.scene.inventar.inventarAddNewItem(sprite);
                 break;
-            } 
+            }
+            else {
+                if (this.hotBarItems[pos].frame.name == sprite){
+                
+                    count = this.hotBarItemsCount[pos]._text;
+                    count++;
+                    this.hotBarItemsCount[pos].setText(count);
+                    break;
+                } 
+                
+                if (this.hotBarItems[pos].frame.name == '8'){
+                    this.hotBarItems[pos].setTexture('blocks', sprite);
+                    this.hotBarItemsCount[pos].setText('1');
+                    break;
+                } 
+            }
+
+             
             
-            if (this.hotBarItems[pos].frame.name == '8'){
-                this.hotBarItems[pos].setTexture('blocks', sprite);
-                this.hotBarItemsCount[pos].setText('1');
-                break;
-            }  
- 
+            
+
         }
         this.hotBarSetAlpha();
         this.hotBarItems[0].alpha = 1;
