@@ -11,20 +11,19 @@ class Inventar {
         this.inventarRows = 15;
         this.inventarCols = 3;
         this.inventarEnabledItems = 6;
-        let inventarButtonsKol = 6;
-        this.inventarButtons = [inventarButtonsKol];
+        this.inventarButtons = this.scene.setArray(6);
 
         this.scene.input.keyboard.on('keydown_I', function () {
             this.inventar.visible = !this.inventar.visible;
             this.inventarItemsVisible();
-            this.inventarButtonsVisible(inventarButtonsKol);
+            this.inventarButtonsVisible();
         }, this);
 
         this.inventarIco.on('pointerup', function(pointer){  
             if (pointer.buttons == 1){
                 this.inventar.visible = !this.inventar.visible;
                 this.inventarItemsVisible();
-                this.inventarButtonsVisible(inventarButtonsKol);
+                this.inventarButtonsVisible();
             }
         },this);
 
@@ -86,9 +85,9 @@ class Inventar {
             }
         }
 
-        this.inventarItemsDis();
-
-        for (let inventarButton = 0; inventarButton < inventarButtonsKol; inventarButton++) {
+        this.inventarItemsDisabled();
+        console.log(this.inventarButtons);
+        for (let inventarButton = 0; inventarButton < this.inventarButtons.length; inventarButton++) {
             x = this.inventar.x + 15;
             y = this.inventar.y + 205;
             
@@ -120,8 +119,8 @@ class Inventar {
     }
 
 
-    inventarButtonsVisible(inventarButtonsKol){
-        for (let inventarButton = 0; inventarButton < inventarButtonsKol; inventarButton++) {
+    inventarButtonsVisible(){
+        for (let inventarButton = 0; inventarButton < this.inventarButtons.length; inventarButton++) {
             this.inventarButtons[inventarButton].visible = !this.inventarButtons[inventarButton].visible;
             this.inventarButtons[inventarButton].clearTint();
             this.inventarButtons[inventarButton].alpha = 0.1;
@@ -254,7 +253,7 @@ class Inventar {
         }
     }
 
-    inventarItemsDis(){
+    inventarItemsDisabled(){
         let count = 0;
         for (let inventarRow = 0; inventarRow < this.inventarRows; inventarRow++) {
             for (let inventarCol = 0; inventarCol < this.inventarCols; inventarCol++) {

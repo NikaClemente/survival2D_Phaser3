@@ -132,6 +132,14 @@ class SceneGame extends Phaser.Scene {
         // console.log('Мы в функции 2 ',i, ' ', j, ' ', 5);
     }
 
+    setArray(length){
+        let arr = [];
+        for(let i = 0; i < length; i++){
+            arr[i] = null;
+        }
+        return arr;
+    }
+
     matrixArray(rows,columns){
         let arr = [];
         for(let i = 0; i < rows; i++){
