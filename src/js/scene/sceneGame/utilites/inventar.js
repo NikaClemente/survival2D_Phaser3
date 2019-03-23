@@ -86,7 +86,7 @@ class Inventar {
         }
 
         this.inventarItemsDisabled();
-        console.log(this.inventarButtons);
+        // console.log(this.inventarButtons);
         for (let inventarButton = 0; inventarButton < this.inventarButtons.length; inventarButton++) {
             x = this.inventar.x + 15;
             y = this.inventar.y + 205;
