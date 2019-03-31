@@ -22,6 +22,7 @@ class SceneGame extends Phaser.Scene {
         this.load.image('hotBar','src/img/hotBar.png');
         this.load.image('inventarIco','src/img/inventarIco.png')
         this.load.image('inventar','src/img/inventar.png');
+        this.load.spritesheet('HpHbExMoney','src/img/HpHbExMoney.png', { frameWidth: 70, frameHeight: 70 });
     }
 
     create() { 
@@ -97,14 +98,17 @@ class SceneGame extends Phaser.Scene {
             } 
         }
 
-
+        this.hpPlayer = new HPPlayer(this);
+        this.hbPlayer = new HBPlayer(this);
+        this.expPlayer = new EXPPlayer(this);
+        this.moneyPlayer = new MoneyPlayer(this);
         this.fpsCounter = new FPSCounter(this);
         this.hotBar = new HotBar(this);
         this.inventar = new Inventar(this);
-        this.minimap = new MinimapCreate(this, row, column, this.fpsCounter, this.hotBar, this.inventar);
-        // this.minimap = new MinimapCreate(this, row, column);
-        
+        this.minimap = new MinimapCreate(this, row, column, this.fpsCounter, this.hotBar, this.inventar, this.hpPlayer, this.hbPlayer, this.expPlayer, this.moneyPlayer);
 
+        
+        
 
         this.physics.world.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5));
         this.cameras.main.setBounds((this.blocks[0][0].x), -200, (this.blocks[0][column-1].x + this.blockSize*this.blockScale * 2 + 37), (this.blocks[row-1][0].y + this.blockSize*this.blockScale * 4 + 5)).setName('main');
@@ -118,6 +122,9 @@ class SceneGame extends Phaser.Scene {
     update(time, delta) {
         this.fpsCounter.update(time, delta);
         this.playerController.update();
+        this.hpPlayer.update(time);
+        this.hbPlayer.update(time);
+        this.expPlayer.update();
     }
 
     blockSetOptions(i, j){
@@ -130,6 +137,10 @@ class SceneGame extends Phaser.Scene {
         this.blocks[i][j].setFrame(8);
         this.blocks[i][j].disableBody(false);
         this.hotBar.hotBarSetFrame(sprite);
+        if (sprite != 8){
+            this.expPlayer.exp += this.spriteGet(sprite).Exp;
+        }
+        
     }
 
     blockNew(i, j){
@@ -212,36 +223,57 @@ class SceneGame extends Phaser.Scene {
                 ID: 0,
                 Name: "Трава",
                 SpawnRate: 1.0,
+                Exp: 1,
+                MinMoney: 5,
+                MaxMoney: 15,
             },
             land: {
                 ID: 1,
                 Name: "Земля",
                 SpawnRate: 1.0,
+                Exp: 1,
+                MinMoney: 5,
+                MaxMoney: 15,
             },
             stone: {
                 ID: 2,
                 Name: "Камень",
                 SpawnRate: 1.0,
+                Exp: 2,
+                MinMoney: 10,
+                MaxMoney: 20,
             },
             iron: {
                 ID: 3,
                 Name: "Железо",
                 SpawnRate: 0.5,
+                Exp: 5,
+                MinMoney: 50,
+                MaxMoney: 100,
             },
             gold: {
                 ID: 4,
                 Name: "Золото",
                 SpawnRate: 0.35,
+                Exp: 8,
+                MinMoney: 200,
+                MaxMoney: 350,
             },
             durableStone: {
                 ID: 5,
                 Name: "Прочный камень",
                 SpawnRate: 1.0,
+                Exp: 5,
+                MinMoney: 40,
+                MaxMoney: 80,
             },
             diamond: {
                 ID: 6,
                 Name: "Алмаз",
                 SpawnRate: 0.2,
+                Exp: 20,
+                MinMoney: 300,
+                MaxMoney: 500,
             },
             obsidian: {
                 ID: 7,
@@ -255,6 +287,16 @@ class SceneGame extends Phaser.Scene {
         for (var key in this.blocksInfo) {
             if (this.blocksInfo[key].ID == sprite){
                return this.blocksInfo[key].Name
+            }
+           
+         }
+
+    }
+
+    spriteGet(sprite){
+        for (var key in this.blocksInfo) {
+            if (this.blocksInfo[key].ID == sprite){
+               return this.blocksInfo[key];
             }
            
          }

@@ -1,5 +1,5 @@
 class MinimapCreate {
-    constructor(scene, row, column, fpsCounter, hotBar, inventar){
+    constructor(scene, row, column, fpsCounter, hotBar, inventar, hpPlayer, hbPlayer, expPlayer, moneyPlayer){
         this.scene = scene;
         // console.log(this.minimap);
         this.minimap = this.scene.cameras.add(WIDTH-200, 10, 150, 100).setZoom(0.1).setName('mini');
@@ -20,8 +20,13 @@ class MinimapCreate {
                 hotBar.hotBarItemsCount, 
                 fpsCounter.fpsText, 
                 inventar.inventar,
+                inventar.inventarIco,
                 inventar.inventarItems,
-                inventar.inventarItemsCount
+                inventar.inventarItemsCount,
+                hpPlayer.HP,
+                hbPlayer.HB,
+                expPlayer.expICO,
+                moneyPlayer.money
             ]);
     }
 }
