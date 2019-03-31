@@ -21,19 +21,19 @@ class HotBar {
         this.hotBarItemsCount = [5];
         this.hotBarEnabledKey = 1;
 
-        this.hotBarItems[0] = this.scene.add.image(this.hotBar.x - 120, this.hotBar.y + 22, 'blocks', 8).setInteractive();
+        this.hotBarItems[0] = this.scene.add.image(this.hotBar.x - 120, this.hotBar.y + 22, 'blocks', 11).setInteractive();
         this.hotBarItemsCount[0] = this.scene.add.text(this.hotBar.x - 120, this.hotBar.y + 18);
         
-        this.hotBarItems[1] = this.scene.add.image(this.hotBar.x - 60, this.hotBar.y + 22, 'blocks', 8).setInteractive();
+        this.hotBarItems[1] = this.scene.add.image(this.hotBar.x - 60, this.hotBar.y + 22, 'blocks', 11).setInteractive();
         this.hotBarItemsCount[1] = this.scene.add.text(this.hotBar.x - 60, this.hotBar.y + 18);
 
-        this.hotBarItems[2] = this.scene.add.image(this.hotBar.x - 0, this.hotBar.y + 22, 'blocks', 8).setInteractive();
+        this.hotBarItems[2] = this.scene.add.image(this.hotBar.x - 0, this.hotBar.y + 22, 'blocks', 11).setInteractive();
         this.hotBarItemsCount[2] = this.scene.add.text(this.hotBar.x - 0, this.hotBar.y + 18);
 
-        this.hotBarItems[3] = this.scene.add.image(this.hotBar.x + 60, this.hotBar.y + 22, 'blocks', 8).setInteractive();
+        this.hotBarItems[3] = this.scene.add.image(this.hotBar.x + 60, this.hotBar.y + 22, 'blocks', 11).setInteractive();
         this.hotBarItemsCount[3] = this.scene.add.text(this.hotBar.x + 60, this.hotBar.y + 18);
 
-        this.hotBarItems[4] = this.scene.add.image(this.hotBar.x + 120, this.hotBar.y + 22, 'blocks', 8).setInteractive();
+        this.hotBarItems[4] = this.scene.add.image(this.hotBar.x + 120, this.hotBar.y + 22, 'blocks', 11).setInteractive();
         this.hotBarItemsCount[4] = this.scene.add.text(this.hotBar.x + 120, this.hotBar.y + 18);
 
         for(let indexItem = 0; indexItem < 5; indexItem++){
@@ -104,7 +104,7 @@ class HotBar {
         let count = 0;
         //console.log(this.hotBarItems.length + this.scene.inventar.inventarEnabledItems);
         for ( let pos = 0; pos < (this.hotBarItems.length + this.scene.inventar.inventarEnabledItems); pos++){
-            if (sprite == 8){
+            if (sprite == 11){
                 break;
             }
 
@@ -121,7 +121,7 @@ class HotBar {
                     break;
                 } 
                 
-                if (this.hotBarItems[pos].frame.name == '8'){
+                if (this.hotBarItems[pos].frame.name == '11'){
                     this.hotBarItems[pos].setTexture('blocks', sprite);
                     this.hotBarItemsCount[pos].setText('1');
                     break;

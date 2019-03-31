@@ -184,7 +184,7 @@ class Inventar {
             for (let inventarCol = 0; inventarCol < this.inventarCols; inventarCol++) {
                 count++;
                 if (count > this.inventarEnabledItems){
-                    this.inventarItems[inventarRow][inventarCol].setTexture('blocks', 9);
+                    this.inventarItems[inventarRow][inventarCol].setTexture('blocks', 12);
                 }
             }
         }
@@ -200,7 +200,7 @@ class Inventar {
                         this.inventarItemsCount[inventarRow][inventarCol].setText(count);
                         return;
                     } 
-                    else if (this.inventarItems[inventarRow][inventarCol].frame.name == '8'){
+                    else if (this.inventarItems[inventarRow][inventarCol].frame.name == '11'){
                         this.inventarItems[inventarRow][inventarCol].setTexture('blocks', sprite);
                         this.inventarItemsCount[inventarRow][inventarCol].setText('1');
                         this.inventarEmptySlots();
@@ -217,7 +217,7 @@ class Inventar {
         let count = 0;
         for (let inventarRow = 0; inventarRow < this.inventarRows; inventarRow++) {
             for (let inventarCol = 0; inventarCol < this.inventarCols; inventarCol++) {
-                if (this.inventarItems[inventarRow][inventarCol].frame.name != '9' && this.inventarItems[inventarRow][inventarCol].frame.name != '8'){
+                if (this.inventarItems[inventarRow][inventarCol].frame.name != '12' && this.inventarItems[inventarRow][inventarCol].frame.name != '11'){
                     count++;
                 }
             }

@@ -60,7 +60,7 @@ class CommonFunctions {
     inventarItemsSetFrame(inventarItems, inventarItemsCount, inventarRow, inventarCol, x, y){
         if (inventarCol == 1){ x += 60; }
         if (inventarCol == 2){ x += 120; }
-        inventarItems[inventarRow][inventarCol] = this.scene.add.image(x , y, 'blocks', 8).setOrigin(0.5, 0.5);
+        inventarItems[inventarRow][inventarCol] = this.scene.add.image(x , y, 'blocks', 11).setOrigin(0.5, 0.5);
         inventarItems[inventarRow][inventarCol].setScale(0.65).setInteractive();
         inventarItems[inventarRow][inventarCol].setScrollFactor(0);
         inventarItems[inventarRow][inventarCol].visible = false;

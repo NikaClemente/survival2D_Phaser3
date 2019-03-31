@@ -27,7 +27,7 @@ class SceneGame extends Phaser.Scene {
 
     create() { 
         this.commonFunctions = new CommonFunctions(this);
-        
+
         this.spriteInfo();
         let row = 25;
         let column = 60;
@@ -73,14 +73,28 @@ class SceneGame extends Phaser.Scene {
                             },this.blocks[i][j]);
                     }
                     else if (i == row-1){
-                            this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', 7).setOrigin(0,0).setScale(this.blockScale);
+                            this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', 10).setOrigin(0,0).setScale(this.blockScale);
                             this.blockSetOptions(i, j);
                             this.blocks[i][j].refreshBody();
                     }
                     else{   
-                            if (i > 0 && i <= lvlDirt) {startBlock = 1; endBlock = 1;}
-                            if (i >= lvlDirt+1 && i < lvlRock) {startBlock = 2; endBlock = 4;}
-                            if (i >= lvlRock && i < row) {startBlock = 5; endBlock = 6;}
+                            // Уровень земли
+                            if (i > 0 && i <= lvlDirt) {
+                                startBlock = 1; 
+                                endBlock = 2;
+                            }
+
+                            // Уровень камня
+                            if (i > lvlDirt && i < lvlRock) {
+                                startBlock = 3; 
+                                endBlock = 6;
+                            }
+
+                            // Уровень прочного камня    
+                            if (i >= lvlRock && i < row) {
+                                startBlock = 7; 
+                                endBlock = 9;
+                            }
 
                             this.blocks[i][j] = this.physics.add.staticImage(j*this.blockSize*this.blockScale + this.startMatrixCoordinateX, i*this.blockSize*this.blockScale + this.startMatrixCoordinateY, 'blocks', this.getRandomArbitrary(startBlock, endBlock)).setOrigin(0,0).setScale(this.blockScale);  
                             // console.log(this.spriteName(this.blocks[i][j].frame.name));
@@ -136,10 +150,10 @@ class SceneGame extends Phaser.Scene {
     }
 
     blockDestroy(i, j, sprite){
-        this.blocks[i][j].setFrame(8);
+        this.blocks[i][j].setFrame(11);
         this.blocks[i][j].disableBody(false);
         this.hotBar.hotBarSetFrame(sprite);
-        if (sprite != 8){
+        if (sprite != 11){
             this.expPlayer.exp += this.spriteGet(sprite).Exp;
         }
         
@@ -148,7 +162,7 @@ class SceneGame extends Phaser.Scene {
     blockNew(i, j){
         let count = 0;
         // console.log('Блок ', this.blocks[i][j]);
-        if ((this.blocks[i][j].frame.name == 8) && (this.hotBar.hotBarItems[this.hotBar.hotBarEnabledKey-1].frame.name != 8)){
+        if ((this.blocks[i][j].frame.name == 11) && (this.hotBar.hotBarItems[this.hotBar.hotBarEnabledKey-1].frame.name != 11)){
             this.blocks[i][j].setFrame(this.hotBar.hotBarItems[this.hotBar.hotBarEnabledKey-1].frame.name);
             this.physics.add.existing(this.blocks[i][j]);
             // console.log(this.hotBarItemsCount[this.hotBarEnabledKey-1]._text);
@@ -157,7 +171,7 @@ class SceneGame extends Phaser.Scene {
             if (count > 0){
                 this.hotBar.hotBarItemsCount[this.hotBar.hotBarEnabledKey-1].setText(count);
             } else {
-                this.hotBar.hotBarItems[this.hotBar.hotBarEnabledKey-1].setFrame(8);
+                this.hotBar.hotBarItems[this.hotBar.hotBarEnabledKey-1].setFrame(11);
                 this.hotBar.hotBarItemsCount[this.hotBar.hotBarEnabledKey-1].setText('');
             }
             
@@ -220,16 +234,32 @@ class SceneGame extends Phaser.Scene {
                 MinMoney: 5,
                 MaxMoney: 15,
             },
-            stone: {
+            landCoal: {
                 ID: 2,
+                Name: "Уголь",
+                SpawnRate: 0.2,
+                Exp: 3,
+                MinMoney: 10,
+                MaxMoney: 20,
+            },
+            stone: {
+                ID: 3,
                 Name: "Камень",
                 SpawnRate: 1.0,
                 Exp: 2,
                 MinMoney: 10,
                 MaxMoney: 20,
             },
+            stoneCoal: {
+                ID: 4,
+                Name: "Уголь",
+                SpawnRate: 0.2,
+                Exp: 3,
+                MinMoney: 10,
+                MaxMoney: 20,
+            },
             iron: {
-                ID: 3,
+                ID: 5,
                 Name: "Железо",
                 SpawnRate: 0.5,
                 Exp: 5,
@@ -237,7 +267,7 @@ class SceneGame extends Phaser.Scene {
                 MaxMoney: 100,
             },
             gold: {
-                ID: 4,
+                ID: 6,
                 Name: "Золото",
                 SpawnRate: 0.35,
                 Exp: 8,
@@ -245,7 +275,7 @@ class SceneGame extends Phaser.Scene {
                 MaxMoney: 350,
             },
             durableStone: {
-                ID: 5,
+                ID: 7,
                 Name: "Прочный камень",
                 SpawnRate: 1.0,
                 Exp: 5,
@@ -253,15 +283,23 @@ class SceneGame extends Phaser.Scene {
                 MaxMoney: 80,
             },
             diamond: {
-                ID: 6,
+                ID: 8,
                 Name: "Алмаз",
                 SpawnRate: 0.2,
                 Exp: 20,
                 MinMoney: 300,
                 MaxMoney: 500,
             },
+            rubin: {
+                ID: 9,
+                Name: "Рубин",
+                SpawnRate: 0.1,
+                Exp: 50,
+                MinMoney: 500,
+                MaxMoney: 1000,
+            },
             obsidian: {
-                ID: 7,
+                ID: 10,
                 Name: "Обсидиан",
                 SpawnRate: 1.0,
             }
