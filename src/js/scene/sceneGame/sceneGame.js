@@ -9,7 +9,7 @@ class SceneGame extends Phaser.Scene {
         this.blockScale = 1;
 
         // this.playerSpeed = 5;
-
+        
         // console.log(this.blockSize*this.blockScale);
     }
 
@@ -26,6 +26,8 @@ class SceneGame extends Phaser.Scene {
     }
 
     create() { 
+        this.commonFunctions = new CommonFunctions(this);
+        
         this.spriteInfo();
         let row = 25;
         let column = 60;
@@ -39,8 +41,8 @@ class SceneGame extends Phaser.Scene {
         fonBackDirt.alpha = 0.5;
 
         this.playerController = new PlayerController(this);
-
-        this.blocks = this.matrixArray(row, column);
+       
+        this.blocks = this.commonFunctions.matrixArray(row, column);
 
         let startBlock = 0;
         let endBlock = 0;
@@ -164,24 +166,7 @@ class SceneGame extends Phaser.Scene {
         // console.log('Мы в функции 2 ',i, ' ', j, ' ', 5);
     }
 
-    setArray(length){
-        let arr = [];
-        for(let i = 0; i < length; i++){
-            arr[i] = null;
-        }
-        return arr;
-    }
-
-    matrixArray(rows,columns){
-        let arr = [];
-        for(let i = 0; i < rows; i++){
-            arr[i] = [];
-            for(let j = 0; j<columns; j++){
-            arr[i][j] = null;
-            }
-        }
-        return arr;
-    }
+    
 
     getRandomArbitrary(min, max) {
         let block;

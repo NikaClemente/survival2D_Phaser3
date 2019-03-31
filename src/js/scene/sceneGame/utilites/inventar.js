@@ -11,7 +11,10 @@ class Inventar {
         this.inventarRows = 15;
         this.inventarCols = 3;
         this.inventarEnabledItems = 6;
-        this.inventarButtons = this.scene.setArray(6);
+        this.inventarButtons = this.scene.commonFunctions.setArray(6);
+
+        let x;
+        let y; 
 
         this.scene.input.keyboard.on('keydown_I', function () {
             this.inventar.visible = !this.inventar.visible;
@@ -36,40 +39,19 @@ class Inventar {
         },this);
         
 
-        this.inventarItems = this.scene.matrixArray(this.inventarRows, this.inventarCols);
-        this.inventarItemsCount = this.scene.matrixArray(this.inventarRows, this.inventarCols);
+        this.inventarItems = this.scene.commonFunctions.matrixArray(this.inventarRows, this.inventarCols);
+        this.inventarItemsCount = this.scene.commonFunctions.matrixArray(this.inventarRows, this.inventarCols);
 
-        let x = this.inventar.x + 35;
-        let y = this.inventar.y;
         this.buttonSelect = 1;
+
+        this.scene.commonFunctions.inventarDisplay( this.inventarRows, 
+                                                    this.inventarCols, 
+                                                    this.inventar, 
+                                                    this.inventarItems, 
+                                                    this.inventarItemsCount );
 
         for (let inventarRow = 0; inventarRow < this.inventarRows; inventarRow++) {
             for (let inventarCol = 0; inventarCol < this.inventarCols; inventarCol++) {
-
-                if (this.inventarRowIdent(inventarRow) == 1){
-                    y = this.inventar.y + 35;
-                    this.inventarItemsSetFrame(inventarRow, inventarCol, x, y)
-                }
-
-                if (this.inventarRowIdent(inventarRow) == 2){
-                    y = this.inventar.y + 95;
-                    this.inventarItemsSetFrame(inventarRow, inventarCol, x, y)
-                }
-
-                if (this.inventarRowIdent(inventarRow) == 3){
-                    y = this.inventar.y + 155;
-                    this.inventarItemsSetFrame(inventarRow, inventarCol, x, y)
-                }
-
-                this.inventarItems[inventarRow][inventarCol].on('pointerover', function(pointer){  
-                    this.setTint(0xB6B8B7);
-                    // console.log(inventarRow+1, ' - ', inventarCol+1);
-                },this.inventarItems[inventarRow][inventarCol]);
-
-                this.inventarItems[inventarRow][inventarCol].on('pointerout', function(pointer){  
-                    this.clearTint();
-                },this.inventarItems[inventarRow][inventarCol]);
-
                 this.inventarItems[inventarRow][inventarCol].on('pointerdown', function(pointer){  
                     if (this.inventarItems[inventarRow][inventarCol].frame.name < 8){
                        console.log('Sprite (', this.scene.spriteName(this.inventarItems[inventarRow][inventarCol].frame.name),') = ', this.inventarItemsCount[inventarRow][inventarCol]._text);  
@@ -86,17 +68,18 @@ class Inventar {
         }
 
         this.inventarItemsDisabled();
-        // console.log(this.inventarButtons);
+        
+        
+
         for (let inventarButton = 0; inventarButton < this.inventarButtons.length; inventarButton++) {
             x = this.inventar.x + 15;
             y = this.inventar.y + 205;
-            
-            // console.log(inventarButton);
+          
             this.inventarButtonsSetFrame(inventarButton, x, y);
             
             this.inventarButtons[inventarButton].on('pointerover', function(pointer){  
                 this.setTint(0xB6B8B7);
-                // console.log(inventarButton+1);
+                
                 this.alpha = 0.5;
             },this.inventarButtons[inventarButton]);
 
@@ -163,64 +146,6 @@ class Inventar {
 
     }
     
-
-    inventarItemsSetFrame(inventarRow, inventarCol, x, y){
-        if (inventarCol == 1){ x += 60; }
-        if (inventarCol == 2){ x += 120; }
-        this.inventarItems[inventarRow][inventarCol] = this.scene.add.image(x , y, 'blocks', 8).setOrigin(0.5, 0.5);
-        this.inventarItems[inventarRow][inventarCol].setScale(0.65).setInteractive();
-        this.inventarItems[inventarRow][inventarCol].setScrollFactor(0);
-        this.inventarItems[inventarRow][inventarCol].visible = false;
-        
-        this.inventarItemsCount[inventarRow][inventarCol] = this.scene.add.text(x, y+10).setOrigin(0.5, 0.5);
-        // this.inventarItemsCount[inventarRow][inventarCol].setScale(0.65);
-        this.inventarItemsCount[inventarRow][inventarCol].setScrollFactor(0);
-        this.inventarItemsCount[inventarRow][inventarCol].setColor('#000000').setFontStyle('bold');
-        this.inventarItemsCount[inventarRow][inventarCol].visible = false;
-    }
-
-    inventarRowIdent(row){
-        switch (row+1) {
-            case 1:
-                return 1;
-            case 2:
-                return 2;
-            case 3:
-                return 3;
-            /////////////
-            case 4:
-                return 1;
-            case 5:
-                return 2;
-            case 6:
-                return 3;
-            /////////////
-            case 7:
-                return 1;
-            case 8:
-                return 2;
-            case 9:
-                return 3;
-            /////////////
-            case 10:
-                return 1;
-            case 11:
-                return 2;
-            case 12:
-                return 3;
-            /////////////
-            case 13:
-                return 1;
-            case 14:
-                return 2;
-            case 15:
-                return 3;
-            /////////////
-            default:
-                break;
-        }
-    }
-
     inventarItemsVisibleFoButtonSelected(){
         for (let inventarRow = 0; inventarRow < this.inventarRows; inventarRow++) {
             for (let inventarCol = 0; inventarCol < this.inventarCols; inventarCol++) {
